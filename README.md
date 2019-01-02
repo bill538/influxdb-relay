@@ -210,6 +210,7 @@ package for Mac OS X, use the options `--package --platform darwin`.
 ### Run influxdb-relay in a docker images
 Run the Docker build packages first.  You have to set a version that is a number not the default git commit letters/numbers
 ```
+docker build -f Dockerfile_build_ubuntu64 -t influxdb-relay-builder:latest .
 docker run -v $(pwd):/root/go/src/github.com/influxdata/influxdb-relay influxdb-relay-builder --package --version `date +%Y%m%d`
 ```
 
@@ -218,7 +219,7 @@ Build run docker images
 docker build -f Dockerfile_run -t influxdb-relay:latest .
 ```
 
-Run Image
+Start/Run Image
 ```
-docker run -ti influxdb-relay
+docker run -d --restart=on-failure --name=main-influxdb-relay -p 9086:9086 -e INFLUXDB_BACKEND_local1=http://127.0.0.1:8086 -e INFLUXDB_BACKEND_local2=http://127.0.0.1:7086  influxdb-relay:latest
 ```
