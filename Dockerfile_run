@@ -1,0 +1,21 @@
+FROM ubuntu:18.04
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+  git \
+  wget \
+  bash
+
+ENV PROJECT_DIR /opt/influxdb-relay
+
+RUN mkdir -p $PROJECT_DIR/build
+
+COPY build $PROJECT_DIR/build
+
+WORKDIR $PROJECT_DIR
+
+RUN apt-get install  $PROJECT_DIR/build/influxdb-relay_*_amd64.deb
+
+COPY run.sh .
+
+EXPOSE 9096
+
+CMD ["/opt/influxdb-relay/run.sh", "/bin/bash"]

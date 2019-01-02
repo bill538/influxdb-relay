@@ -206,3 +206,19 @@ To build packages for other platforms or architectures, use the
 `--platform` and `--arch` options. For example, to build an amd64
 package for Mac OS X, use the options `--package --platform darwin`.
 
+
+### Run influxdb-relay in a docker images
+Run the Docker build packages first.  You have to set a version that is a number not the default git commit letters/numbers
+```
+docker run -v $(pwd):/root/go/src/github.com/influxdata/influxdb-relay influxdb-relay-builder --package --version `date +%Y%m%d`
+```
+
+Build run docker images
+```
+docker build -f Dockerfile_run -t influxdb-relay:latest .
+```
+
+Run Image
+```
+docker run -ti influxdb-relay
+```
